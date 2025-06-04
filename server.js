@@ -17,8 +17,8 @@ const config = require("./config")
 config(app);
 
 // 👇 Defines and applies route handlers
-const indexRoutes = require("./routes/index.routes");
-app.use("/api", indexRoutes);
+const indexRouter = require("./routes/index.routes");
+app.use("/api", indexRouter);
 
 // ❗ Centralized error handling (must be placed after routes)
 const handleErrors = require("./errors")
