@@ -1,5 +1,9 @@
 // ℹ️ Loads environment variables from a .env file into process.env
-process.loadEnvFile()
+try {
+  process.loadEnvFile()
+} catch(error) {
+  console.warn(".env file not found, using default environment values")
+}
 
 // ℹ️ Establishes a connection to the database
 require("./db");
