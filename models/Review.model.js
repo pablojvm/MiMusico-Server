@@ -14,7 +14,7 @@ const reviewSchema = new Schema(
     score: {
       type: Number,
       required: [true, "Este campo es obligatorio"],
-      enum: ["1", "2", "3", "4", "5"],
+      enum: [1, 2, 3, 4, 5],
     },
     creator: {
       type: Schema.Types.ObjectId,
@@ -31,5 +31,5 @@ const reviewSchema = new Schema(
   }
 );
 
-const Review = model("Reviem", reviewSchema);
+const Review = model("Review", reviewSchema);
 module.exports = Review;

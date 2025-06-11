@@ -32,6 +32,7 @@ const adSchema = new Schema(
         "Bach",
         "Roland",
         "Stentor",
+        ""
       ],
     },
     name: String,
@@ -44,7 +45,7 @@ const adSchema = new Schema(
     },
     state: {
       type: String,
-      enum: ["Nuevo", "Seminuevo", "Bueno", "Correcto"],
+      enum: ["Nuevo", "Seminuevo", "Bueno", "Correcto", ""],
     },
     owner: {
       type: Schema.Types.ObjectId,

@@ -4,8 +4,8 @@ const Ad = require("../models/Ad.model");
 
 router.get("/instruments", async(req, res,next) => {
   try {
-    const response = await Ad.find({type:instrument})
-    .populate("review")
+    const response = await Ad.find({type:'instrument'})
+    .populate("owner")
     res.json(response)
   } catch (error) {
     next(error)
@@ -14,8 +14,8 @@ router.get("/instruments", async(req, res,next) => {
 
 router.get("/groups", async(req, res,next) => {
   try {
-    const response = await Ad.find({type:service})
-    .populate("review")
+    const response = await Ad.find({type:'service'})
+    .populate("owner")
     res.json(response)
   } catch (error) {
     next(error)
@@ -24,8 +24,9 @@ router.get("/groups", async(req, res,next) => {
 
 router.get("/:adId", async(req, res,next) => {
   try {
+    console.log(req.params)
     const response = await Ad.findById(req.params.adId)
-    .populate("review")
+    .populate("owner")
     res.json(response)
   } catch (error) {
     next(error)
@@ -53,7 +54,7 @@ router.post("/", async (req, res, next) => {
 
 router.patch("/:adId", async(req, res, next) =>{
   try {
-    const response = await Ad.findByIdAndUpdate(req.params. adId, {
+    const response = await Ad.findByIdAndUpdate(req.params.adId, {
       brand: req.body.brand,
       name: req.body.name,
       model: req.body.model,
