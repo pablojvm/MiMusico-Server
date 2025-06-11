@@ -1,10 +1,10 @@
 const router = require("express").Router();
 
-const anuncioRouter = require("./anuncio.routes")
-router.use("/anuncio", anuncioRouter)
+const adRouter = require("./ad.routes")
+router.use("/ad", adRouter)
 
-const reseñaRouter = require("./reseña.routes")
-router.use("/reseña", reseñaRouter)
+const reviewRouter = require("./review.routes")
+router.use("/review", reviewRouter)
 
 const userRoutes = require(("./user.routes"))
 router.use("/user", userRoutes)
