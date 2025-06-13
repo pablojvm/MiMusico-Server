@@ -4,29 +4,32 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: [true, 'Username is required.'],
+      required: [true, "Username is required."],
       unique: true,
-      trim: true
+      trim: true,
     },
     email: {
       type: String,
-      required: [true, 'Email is required.'],
+      required: [true, "Email is required."],
       unique: true,
       lowercase: true,
-      trim: true
+      trim: true,
     },
     password: {
       type: String,
-      required: [true, 'Password is required.']
+      required: [true, "Password is required."],
     },
-    photo: String,
-    contactNumber: String
+    photo: {
+      type: String,
+      default: "https://res.cloudinary.com/dinaognbb/image/upload/v1749822599/fotouser_f9vrur.png",
+    },
+    number: String,
   },
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`    
-    timestamps: true
+    // this second object adds extra properties: `createdAt` and `updatedAt`
+    timestamps: true,
   }
 );
 
-const User = model('User', userSchema);
+const User = model("User", userSchema);
 module.exports = User;

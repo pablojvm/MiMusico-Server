@@ -6,9 +6,9 @@ const User = require("../models/User.model")
 const verifyToken = require("../middlewares/auth.middlewares")
 
 router.post("/signup", async(req, res, next) => {
-    const {email, password, username} = req.body
+    const {email, password, username, number} = req.body
     if (!username || !email || !password) {
-        res.status(400).json({ errorMessage: "Todos los campos son obligatorios (username, email, password)" })
+        res.status(400).json({ errorMessage: "Los siguientes campos son requeridos (username, email, password)" })
         return;
     }
 
@@ -36,7 +36,8 @@ router.post("/signup", async(req, res, next) => {
         await User.create({
             email,
             password:hashPassword,
-            username
+            username,
+            number
         })
 
         res.sendStatus(201)
