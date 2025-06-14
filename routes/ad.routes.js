@@ -22,7 +22,18 @@ router.get("/groups", async(req, res,next) => {
   }
 });
 
+router.get("/own", async(req, res,next) => {
+   const objectId  = req.query.objectId
+  try {
+    const response = await Ad.find({owner:objectId})
+    res.json(response)
+  } catch (error) {
+    next(error)
+  }
+});
+
 router.get("/:adId", async(req, res,next) => {
+ 
   try {
     console.log(req.params)
     const response = await Ad.findById(req.params.adId)
