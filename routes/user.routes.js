@@ -26,6 +26,15 @@ router.patch("/profile",verifyToken, async(req, res, next) =>{
   }
 })
 
+router.delete("/profile", verifyToken, async(req, res, next) => {
+  try {
+    const response = await User.findByIdAndDelete(req.payload._id)
+    res.send()
+  } catch (error) {
+    next(error)
+  }
+});
+
 // router.patch("/user-profile",verifyToken, async(req, res, next) =>{
 //   try {
 //     const response = await Ad.findByIdAndUpdate(req.payload._id, {
