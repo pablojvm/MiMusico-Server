@@ -50,12 +50,13 @@ router.post("/", async (req, res, next) => {
       type: req.body.type,
       family: req.body.family,
       brand: req.body.brand,
-      name: req.body.name,
+      title: req.body.title,
       model: req.body.model,
       cost: req.body.cost,
       state: req.body.state,
       owner: req.body.owner,
-      photos: req.body.photos
+      photos: req.body.photos,
+      description: req.body.description
     });
     res.json(response).send("Anuncio creado con exito");
   } catch (error) {
@@ -67,7 +68,7 @@ router.patch("/:adId", async(req, res, next) =>{
   try {
     const response = await Ad.findByIdAndUpdate(req.params.adId, {
       brand: req.body.brand,
-      name: req.body.name,
+      title: req.body.title,
       model: req.body.model,
       cost: req.body.cost,
       state: req.body.state

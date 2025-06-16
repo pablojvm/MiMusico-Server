@@ -10,15 +10,15 @@ const adSchema = new Schema(
     family: {
       type: String,
       enum: [
-        "cuerda frotada",
-        "cuerda percutida",
-        "viento metal",
-        "viento madera",
-        "percusion",
-        "banda",
-        "orquesta",
-        "charanga",
-        "solista",
+        "Cuerda Frotada",
+        "Cuerda Percutida",
+        "Viento Metal",
+        "Viento Madera",
+        "Percusión",
+        "Banda",
+        "Orquesta",
+        "Charanga",
+        "Solista",
       ],
       required: [true, "Este campo es obligatorio"],
     },
@@ -35,7 +35,7 @@ const adSchema = new Schema(
         ""
       ],
     },
-    name: String,
+    title: String,
     model: {
       type: String,
     },
@@ -52,6 +52,7 @@ const adSchema = new Schema(
       ref: "User",
     },
     photos: [String],
+    description: String
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
