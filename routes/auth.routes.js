@@ -82,6 +82,9 @@ router.post("/login", async(req,res,next) => {
             expiresIn:"7d"
         })
 
+        console.log('JWT_SECRET:', process.env.JWT_SECRET);
+
+
         res.status(200).json( { authToken } )
 
     } catch (error) {

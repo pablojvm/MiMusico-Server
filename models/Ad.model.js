@@ -25,7 +25,7 @@ const adSchema = new Schema(
     brand: {
       type: String,
       enum: [
-        "Thoman",
+        "Thomann",
         "Yamaha",
         "Fender",
         "Casio",
