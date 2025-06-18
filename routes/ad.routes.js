@@ -71,7 +71,8 @@ router.patch("/:adId", async(req, res, next) =>{
       title: req.body.title,
       model: req.body.model,
       cost: req.body.cost,
-      state: req.body.state
+      state: req.body.state,
+      photos: req.body.photos
     })
     res.json(response).send("Anuncio actualizado")
   } catch (error) {
