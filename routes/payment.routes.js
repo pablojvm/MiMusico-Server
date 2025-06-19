@@ -8,17 +8,19 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // make sure to
 // ... requires
 
 const Payment = require("../models/Payment.model.js")
+const Ad = require("../models/Ad.model");
 
 // ... routes
 
 router.post("/create-payment-intent", async (req, res, next) => {
   const productId = req.body._id; // this is how we will receive the productId the user is trying to purchase. This can also later be set to receive via params.
+  console.log(req.body)
 
   try {
     // TODO . this is where you will later get the correct price to be paid
-
+    const product = await Ad.findById(productId)
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: 1400, // this is an example for an amount of 14 EUR used for testing.
+      amount: product.cost * 100, // this is an example for an amount of 14 EUR used for testing.
       currency: "eur",
       automatic_payment_methods: {
         enabled: true,
@@ -27,7 +29,7 @@ router.post("/create-payment-intent", async (req, res, next) => {
 
     // TODO on part 2. this is where you will later create a Payment Document later
     await Payment.create({
-      price: 1400,
+      price: product.cost * 100,
       product: productId,
       status: "incomplete",
       paymentIntentId: paymentIntent.id,
