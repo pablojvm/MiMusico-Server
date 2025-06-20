@@ -56,6 +56,7 @@ router.get("/:adId", async(req, res,next) => {
   try {
     const { adId } = req.params;
     const response = await Review.find({ ad: adId })
+    .populate("creator")
     res.json(response)
   } catch (error) {
     next(error)
