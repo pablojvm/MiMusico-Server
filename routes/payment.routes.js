@@ -1,11 +1,6 @@
-// in "routes/payment.routes.js"
-
 const router = require("express").Router();
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY); // make sure to add your Stripe Secret Key to the .env
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-// in "routes/payment.routes.js"
-
-// ... requires
 
 const Payment = require("../models/Payment.model.js")
 const Ad = require("../models/Ad.model");

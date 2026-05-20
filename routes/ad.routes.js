@@ -1,50 +1,53 @@
 const router = require("express").Router();
+const mongoose = require("mongoose");
 
 const Ad = require("../models/Ad.model");
+const verifyToken = require("../middlewares/auth.middlewares");
 
-router.get("/instruments", async(req, res,next) => {
+router.get("/instruments", async (req, res, next) => {
   try {
-    const response = await Ad.find({type:'instrument'})
-    .populate("owner")
-    res.json(response)
+    const response = await Ad.find({ type: "instrument" }).populate("owner");
+    res.json(response);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
-router.get("/groups", async(req, res,next) => {
+router.get("/groups", async (req, res, next) => {
   try {
-    const response = await Ad.find({type:'service'})
-    .populate("owner")
-    res.json(response)
+    const response = await Ad.find({ type: "service" }).populate("owner");
+    res.json(response);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
-router.get("/own", async(req, res,next) => {
-   const objectId  = req.query.objectId
+router.get("/own", verifyToken, async (req, res, next) => {
+  const objectId = req.query.objectId || req.payload._id;
   try {
-    const response = await Ad.find({owner:objectId})
-    res.json(response)
+    const response = await Ad.find({ owner: objectId });
+    res.json(response);
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
-router.get("/:adId", async(req, res,next) => {
- 
+router.get("/:adId", async (req, res, next) => {
   try {
-    console.log(req.params)
-    const response = await Ad.findById(req.params.adId)
-    .populate("owner")
-    res.json(response)
+    if (!mongoose.isValidObjectId(req.params.adId)) {
+      return res.status(400).json({ errorMessage: "ID de anuncio no válido" });
+    }
+    const response = await Ad.findById(req.params.adId).populate("owner");
+    if (!response) {
+      return res.status(404).json({ errorMessage: "Anuncio no encontrado" });
+    }
+    res.json(response);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-router.post("/", async (req, res, next) => {
+router.post("/", verifyToken, async (req, res, next) => {
   try {
     const response = await Ad.create({
       type: req.body.type,
@@ -54,40 +57,51 @@ router.post("/", async (req, res, next) => {
       model: req.body.model,
       cost: req.body.cost,
       state: req.body.state,
-      owner: req.body.owner,
+      owner: req.payload._id,
       photos: req.body.photos,
-      description: req.body.description
+      description: req.body.description,
     });
-    res.json(response).send("Anuncio creado con exito");
+    res.status(201).json(response);
   } catch (error) {
     next(error);
   }
 });
 
-router.patch("/:adId", async(req, res, next) =>{
+router.patch("/:adId", verifyToken, async (req, res, next) => {
   try {
-    const response = await Ad.findByIdAndUpdate(req.params.adId, {
-      brand: req.body.brand,
-      title: req.body.title,
-      model: req.body.model,
-      cost: req.body.cost,
-      state: req.body.state,
-      photos: req.body.photos,
-      description: req.body.description
-    })
-    res.json(response).send("Anuncio actualizado")
+    if (!mongoose.isValidObjectId(req.params.adId)) {
+      return res.status(400).json({ errorMessage: "ID de anuncio no válido" });
+    }
+    const response = await Ad.findByIdAndUpdate(
+      req.params.adId,
+      {
+        brand: req.body.brand,
+        title: req.body.title,
+        model: req.body.model,
+        cost: req.body.cost,
+        state: req.body.state,
+        family: req.body.family,
+        photos: req.body.photos,
+        description: req.body.description,
+      },
+      { new: true }
+    );
+    res.json(response);
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
-router.delete("/:adId", async (req, res,next) => {
+router.delete("/:adId", verifyToken, async (req, res, next) => {
   try {
-    await Ad.findByIdAndDelete(req.params.adId)
-    res.send("Anuncio borrado")
+    if (!mongoose.isValidObjectId(req.params.adId)) {
+      return res.status(400).json({ errorMessage: "ID de anuncio no válido" });
+    }
+    await Ad.findByIdAndDelete(req.params.adId);
+    res.json({ message: "Anuncio borrado" });
   } catch (error) {
-    next(error)
+    next(error);
   }
-})
+});
 
 module.exports = router;

@@ -1,4 +1,3 @@
-// in "models/Payment.model.js"
 
 const mongoose = require("mongoose");
 

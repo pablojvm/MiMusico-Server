@@ -49,8 +49,6 @@ router.post("/signup", async(req, res, next) => {
 })
 
 router.post("/login", async(req,res,next) => {
-    console.log("Todo Ok")
-
     const {username, password} = req.body
 
     if (!username || !password) {
@@ -81,9 +79,6 @@ router.post("/login", async(req,res,next) => {
             algorithm:"HS256",
             expiresIn:"7d"
         })
-
-        console.log('JWT_SECRET:', process.env.JWT_SECRET);
-
 
         res.status(200).json( { authToken } )
 
