@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const Review = require("../models/Review.model");
 const verifyToken = require("../middlewares/auth.middlewares");
+const { verifyReviewOwner } = require("../middlewares/ownership.middlewares");
 
 router.post("/", verifyToken, async (req, res, next) => {
   try {
@@ -19,11 +20,8 @@ router.post("/", verifyToken, async (req, res, next) => {
   }
 });
 
-router.patch("/:reviewId", verifyToken, async (req, res, next) => {
+router.patch("/:reviewId", verifyToken, verifyReviewOwner, async (req, res, next) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.reviewId)) {
-      return res.status(400).json({ errorMessage: "ID de reseña no válido" });
-    }
     const response = await Review.findByIdAndUpdate(
       req.params.reviewId,
       {
@@ -39,11 +37,8 @@ router.patch("/:reviewId", verifyToken, async (req, res, next) => {
   }
 });
 
-router.delete("/:reviewId", verifyToken, async (req, res, next) => {
+router.delete("/:reviewId", verifyToken, verifyReviewOwner, async (req, res, next) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.reviewId)) {
-      return res.status(400).json({ errorMessage: "ID de reseña no válido" });
-    }
     await Review.findByIdAndDelete(req.params.reviewId);
     res.json({ message: "Reseña borrada" });
   } catch (error) {

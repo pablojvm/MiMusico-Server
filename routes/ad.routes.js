@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 
 const Ad = require("../models/Ad.model");
 const verifyToken = require("../middlewares/auth.middlewares");
+const { verifyAdOwner } = require("../middlewares/ownership.middlewares");
 
 router.get("/instruments", async (req, res, next) => {
   try {
@@ -67,11 +68,8 @@ router.post("/", verifyToken, async (req, res, next) => {
   }
 });
 
-router.patch("/:adId", verifyToken, async (req, res, next) => {
+router.patch("/:adId", verifyToken, verifyAdOwner, async (req, res, next) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.adId)) {
-      return res.status(400).json({ errorMessage: "ID de anuncio no válido" });
-    }
     const response = await Ad.findByIdAndUpdate(
       req.params.adId,
       {
@@ -92,11 +90,8 @@ router.patch("/:adId", verifyToken, async (req, res, next) => {
   }
 });
 
-router.delete("/:adId", verifyToken, async (req, res, next) => {
+router.delete("/:adId", verifyToken, verifyAdOwner, async (req, res, next) => {
   try {
-    if (!mongoose.isValidObjectId(req.params.adId)) {
-      return res.status(400).json({ errorMessage: "ID de anuncio no válido" });
-    }
     await Ad.findByIdAndDelete(req.params.adId);
     res.json({ message: "Anuncio borrado" });
   } catch (error) {
